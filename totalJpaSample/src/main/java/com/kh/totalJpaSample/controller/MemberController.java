@@ -38,4 +38,6 @@ public class MemberController {
         MemberDto memberDto = memberService.getMemberDetail(email);
         return ResponseEntity.ok(memberDto);
     }
+
+
 }
