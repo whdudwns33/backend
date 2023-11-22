@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 // Data Transfer Object : 계층간 데이터를 전송하기 위한 객체, 프론트엔드와 JSON으로 통신하기 위함
 // 요청과 응답에 대한 객체
 public class MemberDto {
+    private String userId;
     private String email;
     private String password;
     private String name;

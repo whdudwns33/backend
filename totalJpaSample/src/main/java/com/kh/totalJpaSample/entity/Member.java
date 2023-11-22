@@ -15,7 +15,10 @@ public class Member {
     // PK의 역할을 하는 Id 어노테이션
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "member_id")
     private Long id;
+//    @Column(nullable = false)
+    private String userId;
     // not null
     @Column(nullable = false)
     private String name;

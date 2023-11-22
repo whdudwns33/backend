@@ -1,10 +1,8 @@
 package com.kh.totalJpaSample.entity;
-
 import com.kh.totalJpaSample.constant.ItemSellStatus;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
