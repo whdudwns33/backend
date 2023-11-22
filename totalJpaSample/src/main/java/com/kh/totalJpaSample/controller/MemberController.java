@@ -1,12 +1,17 @@
 package com.kh.totalJpaSample.controller;
 
 import com.kh.totalJpaSample.dto.MemberDto;
+import com.kh.totalJpaSample.entity.Member;
 import com.kh.totalJpaSample.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.kh.totalJpaSample.utils.Common.CROSS_ORIGIN;
@@ -32,6 +37,8 @@ public class MemberController {
         List<MemberDto> list = memberService.getMemberList();
         return ResponseEntity.ok(list);
     }
+
+
     // 회원 상세 조회
     @GetMapping("/detail/{email}")
     public ResponseEntity<MemberDto> memberDetail(@PathVariable String email) {
@@ -39,5 +46,19 @@ public class MemberController {
         return ResponseEntity.ok(memberDto);
     }
 
+    // 페이지 네이션 조회
+    @GetMapping("/list/page")
+    public ResponseEntity<List<MemberDto>> memberList (@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size) {
+        List<MemberDto> list = memberService.getMemberList(page, size);
+        return ResponseEntity.ok(list);
+    }
 
+    // 총 페이지 수 조회
+    @GetMapping("/list/page-cnt")
+    public ResponseEntity<Integer> memberPageCount(@RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "5") int size) {
+        int pageCnt = memberService.getMemberPage(page, size);
+        return ResponseEntity.ok(pageCnt);
+    }
 }
