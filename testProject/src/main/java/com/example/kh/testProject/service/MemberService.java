@@ -37,14 +37,21 @@ public class MemberService {
 
     // 회원 가입: 가입 되면 true 아니면 false
     public boolean saveMember (MemberDto memberDto) {
-        Member member = new Member();
-        member.setEmail(memberDto.getEmail());
-        member.setName(memberDto.getName());
-        member.setPassword(memberDto.getPwd());
-        member.setImage(memberDto.getImage());
-        member.setRegDate(memberDto.getRegDate());
-        memberRepository.save(member);
-        return true;
+        try {
+            Member member = new Member();
+            member.setEmail(memberDto.getEmail());
+            member.setName(memberDto.getName());
+            member.setPassword(memberDto.getPwd());
+            member.setImage(memberDto.getImage());
+            member.setRegDate(memberDto.getRegDate());
+            memberRepository.save(member);
+            return true;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("회원가입 오류");
+            return false;
+        }
     }
 
     // 회원 수정

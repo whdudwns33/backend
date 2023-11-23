@@ -18,7 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
     // 멤버 객체로 생성
-    private MemberService memberService;
+    // final????
+    private final MemberService memberService;
 
     // 회원 전체 조회
     @GetMapping("/list")
