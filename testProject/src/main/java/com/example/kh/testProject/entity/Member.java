@@ -28,6 +28,9 @@ public class Member {
     private String image;
     private LocalDateTime regDate;
 
+    @OneToMany(mappedBy = "member",fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Board> boards;
 }

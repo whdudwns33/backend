@@ -2,7 +2,6 @@ package com.example.kh.testProject.controller;
 
 
 import com.example.kh.testProject.dto.MemberDto;
-import com.example.kh.testProject.entity.Member;
 import com.example.kh.testProject.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@CrossOrigin(origins = "http")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -60,7 +59,7 @@ public class MemberController {
     }
 
     // 회원 가입
-    @GetMapping("/new")
+    @PostMapping("/new")
     public ResponseEntity<Boolean> memberRegiter(@RequestBody MemberDto memberDto) {
         boolean isTrue = memberService.saveMember(memberDto);
         return ResponseEntity.ok(isTrue);
@@ -73,6 +72,22 @@ public class MemberController {
         return ResponseEntity.ok(isTrue);
     }
 
+    // 회원 존재 여부 확인
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> isMember(@RequestParam String email) {
+        log.info("email: {}", email);
+        if (email != null) {
+            boolean isReg = memberService.isMember(email);
+            return ResponseEntity.ok(!isReg);
+        } else {
+            return ResponseEntity.ok(false);
+        }
+    }
 
-
+    // 회원 삭제
+    @GetMapping("/delete/{email}")
+    public ResponseEntity<Boolean> memberDelete(@PathVariable String email) {
+        boolean isTrue = memberService.deleteMember(email);
+        return ResponseEntity.ok(isTrue);
+    }
 }

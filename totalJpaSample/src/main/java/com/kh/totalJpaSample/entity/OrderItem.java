@@ -1,9 +1,14 @@
 package com.kh.totalJpaSample.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "order_items")
 public class OrderItem {
     @Id
@@ -11,11 +16,11 @@ public class OrderItem {
     @Column(name = "order_item_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 
@@ -23,4 +28,5 @@ public class OrderItem {
     private int count;
     private LocalDateTime regTime;
     private LocalDateTime updateTime;
+
 }
