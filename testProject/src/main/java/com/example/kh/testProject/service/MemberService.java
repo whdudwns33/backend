@@ -4,6 +4,7 @@ import com.example.kh.testProject.dto.MemberDto;
 import com.example.kh.testProject.entity.Member;
 import com.example.kh.testProject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -73,12 +74,10 @@ public class MemberService {
 
     // 로그인
     public boolean login(String email, String pwd) {
-        if (email != null && pwd != null) {
+        log.info("email: {}, pwd: {}", email, pwd);
         Optional<Member> member = memberRepository.findByEmailAndPassword(email, pwd);
+        log.info("member: {}", member);
         return member.isPresent();
-        } else {
-            return false;
-        }
     }
 
     // 회원 삭제
@@ -122,10 +121,6 @@ public class MemberService {
         }
         return memberDtos;
     }
-
-
-
-
 
     private MemberDto convertEntityToDto(Member member) {
         // 엔터티에 있는 객체 정보를 DTO로 저장. 즉, 백엔드에서 프론트엔드로 정보를 전달하기 위함.

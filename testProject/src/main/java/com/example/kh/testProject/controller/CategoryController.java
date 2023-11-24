@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.kh.testProject.utils.Common.CORS_ORIGIN;
+
 @Slf4j
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = CORS_ORIGIN)
 @RestController
 @RequiredArgsConstructor
 public class CategoryController {
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
     // 카테고리 등록
     @PostMapping("/new")
     public ResponseEntity<Boolean> categoryRegister(@RequestBody CategoryDto categoryDto) {

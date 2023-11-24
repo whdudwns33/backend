@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.kh.testProject.utils.Common.CORS_ORIGIN;
+
 @Slf4j
-@CrossOrigin("*")
+@CrossOrigin(origins = CORS_ORIGIN)
 @RestController
 @RequestMapping("/api/board")
 @RequiredArgsConstructor
 public class BoardController {
+    // @RequiredArgsConstructor는 final이 있어야 의존성 주입이 된다.
     private final BoardService boardService;
     // 게시글 등록
     @PostMapping("/new")

@@ -11,15 +11,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.example.kh.testProject.utils.Common.CORS_ORIGIN;
+
 @Slf4j
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = CORS_ORIGIN)
 @RestController
 @RequestMapping("/api/comment")
 @RequiredArgsConstructor
 public class CommentController {
-    private CommentService commentService;
-    private MemberService memberService;
-    private CategoryService categoryService;
+    private final CommentService commentService;
+    private final MemberService memberService;
+    private final CategoryService categoryService;
 
     // 회원 등록
     @PostMapping("/new")

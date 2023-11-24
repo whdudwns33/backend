@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @Slf4j
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@CrossOrigin
 public class MemberController {
     // 멤버 객체로 생성
-    // final????
     private final MemberService memberService;
 
     // 회원 전체 조회
@@ -66,10 +66,13 @@ public class MemberController {
         return ResponseEntity.ok(isTrue);
     }
 
-    // 회원 가입
+    // 회원 로그인
     @GetMapping("/login")
     public ResponseEntity<Boolean> memberLogin(@RequestBody MemberDto memberDto) {
+        System.out.println(memberDto);
         boolean isTrue = memberService.login(memberDto.getEmail(), memberDto.getPwd());
+        System.out.println("이메일 : " + memberDto.getEmail());
+        System.out.println("패스워드 : " + memberDto.getPwd());
         return ResponseEntity.ok(isTrue);
     }
 
