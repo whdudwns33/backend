@@ -47,4 +47,12 @@ public class AuthService {
 
         return tokenProvider.generateTokenDto(authentication);
     }
+
+    // 닉네임 중복 체크
+    public boolean isNickName(String nickName) {
+        System.out.println("닉네임 : " + nickName);
+        boolean isTrue = memberRepository.existsByNickName(nickName);
+        log.warn("닉네임 중복 확인 {} : ", isTrue);
+        return isTrue;
+    }
 }

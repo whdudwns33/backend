@@ -19,19 +19,30 @@ public class Member {
 
     private String email;
     private String password;
+    private String nickName;
     private String name;
+    private String addr;
+    private String tel;
     private String gender;
-    private int amount;
+    private int age;
+    private int point;
+    private String BUSINESS_NUM;
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
+
     @Builder
-    public Member(String email, String password,String name,String gender, int amount, Authority authority) {
+    public Member(String email, String password,String nickName, String name,String addr,String tel, String gender,String BUSINESS_NUM, int point, int age,Authority authority) {
         this.email = email;
         this.password = password;
+        this.nickName = nickName;
+        this.addr = addr;
+        this.tel = tel;
+        this.BUSINESS_NUM = BUSINESS_NUM;
         this.name = name;
         this.gender = gender;
-        this.amount = amount;
+        this.point = point;
         this.authority = authority;
+        this.age = age;
     }
 }

@@ -17,10 +17,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class MemberReqDto {
     private String email;
     private String password;
+    private String nickName;
     private String name;
+    private String addr;
+    private String tel;
     private String gender;
-    private String image;
-    private int amount;
+    private int age;
+    private int point;
+    private String BUSINESS_NUM;
 
     PasswordEncoder passwordEncoder;
     // MemberReqDto -> Member
@@ -29,8 +33,13 @@ public class MemberReqDto {
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .name(name)
+                .addr(addr)
+                .tel(tel)
+                .nickName(nickName)
+                .age(age)
                 .gender(gender)
-                .amount(amount)
+                .point(point)
+                .BUSINESS_NUM(BUSINESS_NUM)
                 .authority(Authority.ROLE_USER)
                 .build();
     }

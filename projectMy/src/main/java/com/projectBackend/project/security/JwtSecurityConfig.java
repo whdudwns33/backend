@@ -1,7 +1,8 @@
 package com.projectBackend.project.security;
 
-import com.kh.project.backEnd.project.jwt.JwtFilter;
-import com.kh.project.backEnd.project.jwt.TokenProvider;
+
+import com.projectBackend.project.jwt.JwtFilter;
+import com.projectBackend.project.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

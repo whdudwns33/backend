@@ -1,6 +1,6 @@
 package com.projectBackend.project.security;
 
-import com.kh.project.backEnd.project.jwt.TokenProvider;
+import com.projectBackend.project.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

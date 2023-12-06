@@ -11,12 +11,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class MemberResDto {
-    private String name;
     private String email;
+    private String password;
+    private String nickName;
+    private String name;
+    private String addr;
+    private String tel;
     private String gender;
-    private int amount;
-    private String image;
-    private LocalDateTime regDate;
+    private int age;
+    private int point;
+    private String BUSINESS_NUM;
 
     // Member -> MemberResDto
     public static MemberResDto of(Member member) {
