@@ -45,9 +45,10 @@ public class AuthController {
         return ResponseEntity.ok(isTrue);
     }
 
-    // 인증 번호 체크
-    @PostMapping("/ePw")
+    // 인증 번호 체크, post 방식만 허용하는 듯.
+    @GetMapping("/ePw")
     public ResponseEntity<Boolean> checkEpw(@RequestParam String epw) {
+        System.out.println("프론트에서 날린 epw" + epw);
         if (epw.equals(EPW)) {
             return ResponseEntity.ok(true);
         }
