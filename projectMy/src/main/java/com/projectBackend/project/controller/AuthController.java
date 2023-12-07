@@ -1,7 +1,7 @@
 package com.projectBackend.project.controller;
 
-import com.projectBackend.project.dto.MemberReqDto;
-import com.projectBackend.project.dto.MemberResDto;
+import com.projectBackend.project.dto.UserReqDto;
+import com.projectBackend.project.dto.UserResDto;
 import com.projectBackend.project.dto.TokenDto;
 import com.projectBackend.project.jwt.TokenProvider;
 import com.projectBackend.project.service.AuthService;
@@ -30,9 +30,9 @@ public class AuthController {
 
     // 회원가입
     @PostMapping("/sign")
-    public ResponseEntity<MemberResDto> sign(@RequestBody MemberReqDto memberReqDto) {
+    public ResponseEntity<UserResDto> sign(@RequestBody UserReqDto memberReqDto) {
         log.warn("memberReqDto {} :", memberReqDto);
-        MemberResDto result = authService.signup(memberReqDto);
+        UserResDto result = authService.signup(memberReqDto);
         System.out.println(result);
         return ResponseEntity.ok(result);
     }
@@ -67,7 +67,7 @@ public class AuthController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@RequestBody MemberReqDto memberReqDto) {
+    public ResponseEntity<TokenDto> login(@RequestBody UserReqDto memberReqDto) {
         return ResponseEntity.ok(authService.login(memberReqDto));
     }
 
