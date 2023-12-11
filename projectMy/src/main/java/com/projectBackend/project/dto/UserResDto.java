@@ -1,7 +1,7 @@
 package com.projectBackend.project.dto;
 
 import com.projectBackend.project.constant.Authority;
-import com.projectBackend.project.entity.User;
+import com.projectBackend.project.entity.Member;
 import lombok.*;
 
 import javax.persistence.EnumType;
@@ -27,7 +27,7 @@ public class UserResDto {
     private Authority authority;
 
     // Member -> MemberResDto
-    public static UserResDto of(User member) {
+    public static UserResDto of(Member member) {
         // 응답에는 비밀번호가 필요없기에 일다 제외
         return UserResDto.builder()
                 .userEmail(member.getUserEmail())

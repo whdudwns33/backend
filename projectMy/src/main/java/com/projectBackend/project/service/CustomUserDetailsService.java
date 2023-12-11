@@ -1,7 +1,7 @@
 package com.projectBackend.project.service;
 
 
-import com.projectBackend.project.entity.User;
+import com.projectBackend.project.entity.Member;
 import com.projectBackend.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,11 +25,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException(username + "을 찾을 수 없음"));
     }
 
-    private UserDetails createUserDetails (User user) {
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getAuthority().toString());
+    private UserDetails createUserDetails (Member member) {
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(member.getAuthority().toString());
         return new org.springframework.security.core.userdetails.User(
-                String.valueOf(user.getId()),
-                user.getUserPassword(),
+                String.valueOf(member.getId()),
+                member.getUserPassword(),
                 Collections.singleton(grantedAuthority)
         );
     }

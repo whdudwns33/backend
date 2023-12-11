@@ -4,26 +4,18 @@ package com.projectBackend.project.service;
 import com.projectBackend.project.dto.UserReqDto;
 import com.projectBackend.project.dto.UserResDto;
 import com.projectBackend.project.dto.TokenDto;
-import com.projectBackend.project.entity.User;
+import com.projectBackend.project.entity.Member;
 import com.projectBackend.project.jwt.TokenProvider;
 import com.projectBackend.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -40,7 +32,7 @@ public class AuthService {
         if (userRepository.existsByUserEmail(requestDto.getUserEmail())) {
             throw new RuntimeException("이미 가입되어 있는 유저입니다");
         }
-        User member = requestDto.toEntity(passwordEncoder);
+        Member member = requestDto.toEntity(passwordEncoder);
         return UserResDto.of(userRepository.save(member));
     }
     

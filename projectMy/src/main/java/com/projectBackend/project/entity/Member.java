@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "user")
-public class User {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -30,7 +30,7 @@ public class User {
     private Authority authority;
 
     @Builder
-    public User(String email, String password, String nickName, String name, String addr, String tel, String gender, String BUSINESS_NUM, int point, int age, Authority authority) {
+    public Member(String email, String password, String nickName, String name, String addr, String tel, String gender, String BUSINESS_NUM, int point, int age, Authority authority) {
         this.userEmail = email;
         this.userPassword = password;
         this.userNickname = nickName;

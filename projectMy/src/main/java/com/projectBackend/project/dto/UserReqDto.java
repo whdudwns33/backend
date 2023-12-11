@@ -1,7 +1,7 @@
 package com.projectBackend.project.dto;
 
 import com.projectBackend.project.constant.Authority;
-import com.projectBackend.project.entity.User;
+import com.projectBackend.project.entity.Member;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,8 +33,8 @@ public class UserReqDto {
     private PasswordEncoder passwordEncoder;
 
     // MemberReqDto -> Member
-    public User toEntity(PasswordEncoder passwordEncoder) {
-        return User.builder()
+    public Member toEntity(PasswordEncoder passwordEncoder) {
+        return Member.builder()
                 .email(userEmail)
                 .password(passwordEncoder.encode(userPassword))
                 .name(userName)
