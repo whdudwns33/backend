@@ -112,18 +112,27 @@ public class TokenService {
     public String kakaoEmail () {
         RestTemplate rt = new RestTemplate();
         String accessToken = getToken();
+        System.out.println("accessToken : " + accessToken);
 
         // HttpHeader 오브젝트 생성
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-        headers.add("Authorization", "bearer" + accessToken); // 여기에 액세스 토큰을 넣어주세요.
+        headers.set("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+        headers.set("Authorization", "Bearer " + accessToken);
+        System.out.println("headers : " + headers);
+
+        // get 방식은 body가 필요 없지만 exchange를 쓰기 위해서는 필요
+        HttpEntity<String> requestEntity = new HttpEntity<>("request body content", headers);
+
 
         // GET 요청하기 - response 변수의 응답받음.
-        ResponseEntity<String> response = rt.getForEntity(
+        ResponseEntity<String> response = rt.exchange(
                 "https://kapi.kakao.com/v2/user/me",
+                HttpMethod.GET,
+                requestEntity,
                 String.class,
                 headers
         );
+        System.out.println("Get RESPONSE : " + response);
 
         // ResponseEntity의 바디 부분만 반환
         return response.getBody();
