@@ -24,7 +24,7 @@ import static com.projectBackend.project.utils.Common.*;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class TokenService {
+public class KakaoService {
     private final TokenRepository tokenRepository;
 //    private final TokenDto tokenDto;
 
@@ -67,24 +67,17 @@ public class TokenService {
                 // JSON 문자열을 JsonNode로 변환 및 토큰 정보 출력
                 JsonNode jsonNode = objectMapper.readTree(response.getBody());
                 String accessToken = jsonNode.get("access_token").asText();
-                String tokenType = jsonNode.get("token_type").asText();
-                String refreshToken = jsonNode.get("refresh_token").asText();
-                Long accessExpire = Long.valueOf(jsonNode.get("expires_in").asText());
-                Long refreshExpire = Long.valueOf(jsonNode.get("refresh_token_expires_in").asText());
+//                String tokenType = jsonNode.get("token_type").asText();
+//                String refreshToken = jsonNode.get("refresh_token").asText();
+//                Long accessExpire = Long.valueOf(jsonNode.get("expires_in").asText());
+//                Long refreshExpire = Long.valueOf(jsonNode.get("refresh_token_expires_in").asText());
 
                 log.info("Access Token: {}", accessToken);
-                log.info("Token Type: {}", tokenType);
-                log.info("Refresh Token: {}", refreshToken);
-
-                // 데이터 저장
-                tokenRepository.deleteAll();
-                token.setGrantType(tokenType);
-                token.setAccessToken(accessToken);
-                token.setRefreshToken(refreshToken);
-                token.setAccessTokenExpiresIn(accessExpire);
-                token.setRefreshTokenExpiresIn(refreshExpire);
-                tokenRepository.save(token);
-                return "tur";
+//                log.info("Token Type: {}", tokenType);
+//                log.info("Refresh Token: {}", refreshToken);
+                String kakaoEmailData = kakaoEmail(accessToken);
+                log.info("kakao email : {}", kakaoEmailData);
+                return kakaoEmailData;
             }
             else {
                 return null;
@@ -97,46 +90,59 @@ public class TokenService {
         }
     }
 
-    // 데이터 베이스의 토큰 정보 출력
-    public String getToken() {
-        List<Token> tokens = tokenRepository.findAll();
-        // access 토큰 선언
-        String accessToken = null;
-        for (Token token : tokens) {
-            accessToken = token.getAccessToken();
-        }
-        return accessToken;
-    }
 
     // 카카오 이메일 받아오기
-    public String kakaoEmail () {
-        RestTemplate rt = new RestTemplate();
-        String accessToken = getToken();
-        System.out.println("accessToken : " + accessToken);
+    public String kakaoEmail (String accessToken) {
+        try {
+            RestTemplate rt = new RestTemplate();
+            // 토큰 가져오기 => 수정 필요
+            ObjectMapper objectMapper = new ObjectMapper();
+//        System.out.println("accessToken : " + accessToken);
 
-        // HttpHeader 오브젝트 생성
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-        headers.set("Authorization", "Bearer " + accessToken);
-        System.out.println("headers : " + headers);
+            // HttpHeader 오브젝트 생성
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+            headers.set("Authorization", "Bearer " + accessToken);
+//        System.out.println("headers : " + headers);
 
-        // get 방식은 body가 필요 없지만 exchange를 쓰기 위해서는 필요
-        HttpEntity<String> requestEntity = new HttpEntity<>("request body content", headers);
+            // get 방식은 body가 필요 없지만 exchange를 쓰기 위해서는 필요
+            HttpEntity<String> requestEntity = new HttpEntity<>("request body content", headers);
 
-
-        // GET 요청하기 - response 변수의 응답받음.
-        ResponseEntity<String> response = rt.exchange(
-                "https://kapi.kakao.com/v2/user/me",
-                HttpMethod.GET,
-                requestEntity,
-                String.class,
-                headers
-        );
-        System.out.println("Get RESPONSE : " + response);
-
-        // ResponseEntity의 바디 부분만 반환
-        return response.getBody();
+            // GET 요청하기 - response 변수의 응답받음.
+            ResponseEntity<String> response = rt.exchange(
+                    "https://kapi.kakao.com/v2/user/me",
+                    HttpMethod.GET,
+                    requestEntity,
+                    String.class,
+                    headers
+            );
+            System.out.println("Get RESPONSE : " + response);
+            if (response.getStatusCodeValue() == 200) {
+                // json 문자열의 바디 부분을 객체화
+                // email의 경우 kakao_acount 내부에 존재
+                JsonNode jsonNode = objectMapper.readTree(response.getBody());
+                JsonNode kakaoAccountNode = jsonNode.path("kakao_account");
+                String email = kakaoAccountNode.path("email").asText();
+                if (email != null) {
+                    log.info("email123 {} :", email);
+                    return email;
+                }
+                else {
+                    log.warn("카카오 이메일이 전송되지 않음");
+                    return null;
+                }
+            }
+            else {
+                System.out.println("카카오 유저 연결이 되지 않음");
+                return null;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
 
 
 

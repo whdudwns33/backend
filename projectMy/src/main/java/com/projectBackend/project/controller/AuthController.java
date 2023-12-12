@@ -1,9 +1,11 @@
 package com.projectBackend.project.controller;
 
+import com.projectBackend.project.dto.TokenDto;
 import com.projectBackend.project.dto.UserReqDto;
 import com.projectBackend.project.dto.UserResDto;
+import com.projectBackend.project.entity.Token;
 import com.projectBackend.project.jwt.TokenProvider;
-import com.projectBackend.project.service.TokenService;
+import com.projectBackend.project.service.KakaoService;
 import com.projectBackend.project.service.AuthService;
 import com.projectBackend.project.service.MailService;
 import lombok.Getter;
@@ -27,7 +29,7 @@ import static com.projectBackend.project.service.MailService.EPW;
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
-    private final TokenService tokenService;
+    private final KakaoService kakaoService;
     private final TokenProvider tokenProvider;
     private final MailService mailService;
 
@@ -67,20 +69,26 @@ public class AuthController {
         return ResponseEntity.ok(authService.isNickName(nickName));
     }
 
-
-    // 카카오 로그인 및 토큰 발급
+    // 카카오 로그인 및 이메일 발급
     @GetMapping("/kakao")
     public ResponseEntity<String> kakao(@RequestParam String code) {
         log.info("code {} : ", code);
-        tokenService.kakaoToken(code);
-        return ResponseEntity.ok("true");
-    }
-
-    // 이메일 정보 확인
-    @PostMapping("/kakao/email")
-    public ResponseEntity<String> kakaoEmail() {
-        String email = tokenService.kakaoEmail();
-        System.out.println(email);
+        String email = kakaoService.kakaoToken(code);
         return ResponseEntity.ok(email);
     }
+
+    // 카카오 로그인 이후 토큰 발급
+    @GetMapping("/kakaoToken")
+    public ResponseEntity<TokenDto> kakaoToken(@RequestParam String email) {
+        TokenDto tokenDto = authService.kakaoLogin(email);
+        return ResponseEntity.ok(tokenDto);
+    }
+
+    // 이메일 중복 체크
+    @GetMapping("/email")
+    public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
+        boolean isTrue = authService.isEmail(email);
+        return ResponseEntity.ok(isTrue);
+    }
+    
 }
