@@ -3,12 +3,16 @@ package com.projectBackend.project.jwt;
 
 
 import com.projectBackend.project.dto.TokenDto;
+import com.projectBackend.project.entity.Token;
+import com.projectBackend.project.repository.TokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +29,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+
 public class TokenProvider {
     private static final String AUTHORITIES_KEY ="auth";
     private static final String BEARER_TYPE = "Bearer"; // 토큰의 타입
@@ -32,8 +37,7 @@ public class TokenProvider {
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24; // 24시간
     private final Key key; // 토큰을 서명(signiture)하기 위한 Key
 
-
-    //
+    // jwt 시크릿 키를 프로퍼티스에서 가져옴
     public TokenProvider(@Value("${jwt.secret}") String secretKey) {
         this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512); // HS512 알고리즘을 사용하는 키 생성
     }
@@ -51,7 +55,7 @@ public class TokenProvider {
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
 
-        // 토큰 생성
+        // 엑세스 토큰 생성
         String accessToken = io.jsonwebtoken.Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
@@ -72,6 +76,7 @@ public class TokenProvider {
                 .compact();
         log.warn("accessToken {} : ", accessToken);
         log.warn("refreshToken {} : ", refreshToken);
+
         // 토큰 정보를 담은 TokenDto 객체 생성
         return TokenDto.builder()
                 .grantType(BEARER_TYPE)
@@ -133,6 +138,8 @@ public class TokenProvider {
         }
     }
 
+    // 회원 정보 출력
+    // 사용 보류
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
         // 토큰의 claim 부분에서 권한 정보를 체크. 만약 권한이 없다면 null 반환

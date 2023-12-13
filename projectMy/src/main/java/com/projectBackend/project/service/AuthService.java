@@ -5,7 +5,9 @@ import com.projectBackend.project.dto.UserReqDto;
 import com.projectBackend.project.dto.UserResDto;
 import com.projectBackend.project.dto.TokenDto;
 import com.projectBackend.project.entity.Member;
+import com.projectBackend.project.entity.Token;
 import com.projectBackend.project.jwt.TokenProvider;
+import com.projectBackend.project.repository.TokenRepository;
 import com.projectBackend.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final TokenRepository tokenRepository;
 
     // 회원 가입
     public UserResDto signup(UserReqDto requestDto) {
@@ -37,19 +40,43 @@ public class AuthService {
         Member member = requestDto.toEntity(passwordEncoder);
         return UserResDto.of(userRepository.save(member));
     }
-    
-    // 로그인
+
+    // 로그인: 토큰 발급 및 토큰 데이터 저장 
     public TokenDto login(UserReqDto requestDto) {
-        System.out.println("requestDto 이메일 :" + requestDto.getUserEmail());
-        System.out.println("requestDto 패스워드 :" + requestDto.getUserPassword());
-        // 인증 코드 생성
-        UsernamePasswordAuthenticationToken authenticationToken = requestDto.toAuthentication();
-        log.warn("authenticationToken: {}", authenticationToken);
+        try {
+            System.out.println("requestDto 이메일 :" + requestDto.getUserEmail());
+            System.out.println("requestDto 패스워드 :" + requestDto.getUserPassword());
+            // 인증 코드 생성
+            UsernamePasswordAuthenticationToken authenticationToken = requestDto.toAuthentication();
+            log.warn("authenticationToken: {}", authenticationToken);
+            Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken);
+            log.warn("authentication: {}", authentication);
 
-        Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken);
-        log.warn("authentication: {}", authentication);
-
-        return tokenProvider.generateTokenDto(authentication);
+            // 토큰 생성
+            TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+            if (tokenDto != null) {
+                // 토큰 값 저장
+                tokenRepository.deleteAll();
+                Token token = new Token();
+                token.setEmail(requestDto.getUserEmail());
+//                token.setAccessTokenExpiresIn(tokenDto.getAccessTokenExpiresIn());
+//                token.setAccessToken(tokenDto.getAccessToken());
+//                token.setRefreshTokenExpiresIn(tokenDto.getRefreshTokenExpiresIn());
+                token.setRefreshToken(tokenDto.getRefreshToken());
+//                token.setGrantType(tokenDto.getGrantType());
+                tokenRepository.save(token);
+                return tokenDto;
+            }
+            else {
+                System.out.println("토큰 값이 null 입니다.");
+                return null;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("토큰 발급 실패");
+            return null;
+        }
     }
 
     // 카카오 로그인 => 카카오 토큰이 존재하지만, 사용하지 않을 생각
@@ -104,6 +131,8 @@ public class AuthService {
         log.warn("닉네임 중복 확인 {} : ", isTrue);
         return isTrue;
     }
+
+
 
 
 }

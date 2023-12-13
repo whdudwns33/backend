@@ -3,22 +3,28 @@ package com.projectBackend.project.controller;
 import com.projectBackend.project.dto.TokenDto;
 import com.projectBackend.project.dto.UserReqDto;
 import com.projectBackend.project.dto.UserResDto;
-import com.projectBackend.project.entity.Token;
 import com.projectBackend.project.jwt.TokenProvider;
-import com.projectBackend.project.service.KakaoService;
+import com.projectBackend.project.repository.TokenRepository;
 import com.projectBackend.project.service.AuthService;
+import com.projectBackend.project.service.KakaoService;
 import com.projectBackend.project.service.MailService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
-
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.projectBackend.project.service.MailService.EPW;
+import static com.projectBackend.project.utils.Common.*;
 
 @Slf4j
 @RestController
@@ -32,15 +38,17 @@ public class AuthController {
     private final KakaoService kakaoService;
     private final TokenProvider tokenProvider;
     private final MailService mailService;
-
+    private final TokenRepository tokenRepository;
 
     // 회원가입
     @PostMapping("/sign")
     public ResponseEntity<UserResDto> sign(@RequestBody UserReqDto memberReqDto) {
-        log.warn("memberReqDto {} :", memberReqDto);
+
+        log.warn("memberReqDto {} :", memberReqDto.getUserPassword());
         UserResDto result = authService.signup(memberReqDto);
         System.out.println(result);
         return ResponseEntity.ok(result);
+
     }
 
     // 회원 가입 시 이메일 인증 + 중복 체크
@@ -69,7 +77,16 @@ public class AuthController {
         return ResponseEntity.ok(authService.isNickName(nickName));
     }
 
-    // 카카오 로그인 및 이메일 발급
+
+    // 로그인
+    @PostMapping("/login")
+    public ResponseEntity<TokenDto> login(@RequestBody UserReqDto memberReqDto) {
+        TokenDto tokenDto = authService.login(memberReqDto);
+
+        return ResponseEntity.ok(tokenDto);
+    }
+
+     // 카카오 로그인 및 이메일 발급
     @GetMapping("/kakao")
     public ResponseEntity<String> kakao(@RequestParam String code) {
         log.info("code {} : ", code);
@@ -90,5 +107,4 @@ public class AuthController {
         boolean isTrue = authService.isEmail(email);
         return ResponseEntity.ok(isTrue);
     }
-    
 }

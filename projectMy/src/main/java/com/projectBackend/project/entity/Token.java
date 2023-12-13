@@ -18,9 +18,16 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String grantType; // 인증 방식
-    private String accessToken; // 액세스 토큰
+    // One-to-One 매핑
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Member user;
+
+    @Column(name = "TOKEN_USER_EMAIL")
+    private String email;
+//    private String grantType; // 인증 방식
+//    private String accessToken; // 액세스 토큰
     private String refreshToken; // 리프레시 토큰
-    private Long accessTokenExpiresIn; // 액세스 토큰 만료 시간
-    private Long refreshTokenExpiresIn; // 리프레시 토큰 만료 시간
+//    private Long accessTokenExpiresIn; // 액세스 토큰 만료 시간
+//    private Long refreshTokenExpiresIn; // 리프레시 토큰 만료 시간
 }
