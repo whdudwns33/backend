@@ -14,11 +14,10 @@ import javax.persistence.Enumerated;
 @Builder
 public class UserResDto {
     private String userEmail;
-    private String userPassword;
+    private String userPasswword;
     private String userNickname;
     private String userName;
     private String userAddr;
-    private String userAddrDetail;
     private String userPhone;
     private String userGen;
     private int userAge;
@@ -35,7 +34,6 @@ public class UserResDto {
                 .userNickname(member.getUserNickname())
                 .userName(member.getUserName())
                 .userAddr(member.getUserAddr())
-                .userAddrDetail(member.getUserAddrDetail())
                 .userPhone(member.getUserPhone())
                 .userGen(member.getUserGen())
                 .userAge(member.getUserAge())

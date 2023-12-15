@@ -22,7 +22,6 @@ public class UserReqDto {
     private String userNickname;
     private String userName;
     private String userAddr;
-    private String userAddrDetail;
     private String userPhone;
     private String userGen;
     private int userAge;
@@ -33,17 +32,13 @@ public class UserReqDto {
 
     private PasswordEncoder passwordEncoder;
 
-    // UserReqDto -> Member
+    // MemberReqDto -> Member
     public Member toEntity(PasswordEncoder passwordEncoder) {
-        if (passwordEncoder == null) {
-            throw new IllegalStateException("PasswordEncoder is not set in UserReqDto");
-        }
         return Member.builder()
                 .email(userEmail)
-                .userPassword(passwordEncoder.encode(userPassword))
+                .password(passwordEncoder.encode(userPassword))
                 .name(userName)
                 .addr(userAddr)
-                .userAddrDetail(userAddrDetail)
                 .tel(userPhone)
                 .nickName(userNickname)
                 .age(userAge)

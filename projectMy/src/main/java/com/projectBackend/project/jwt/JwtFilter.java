@@ -38,7 +38,6 @@ public class JwtFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
             // 승인 객체 생성.
             Authentication authentication = tokenProvider.getAuthentication(jwt);
-            log.info("access Token data : {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

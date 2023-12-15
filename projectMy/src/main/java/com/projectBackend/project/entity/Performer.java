@@ -9,9 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "performer")
-@Getter
-@Setter
-@ToString
+@Getter @Setter @ToString
 @NoArgsConstructor
 public class Performer {
     @Id
@@ -21,10 +19,12 @@ public class Performer {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "performance_id", nullable = false) // 외래키
-    private Performance performance;
+    private Performance performance; //
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false) // 외래키
     private Member member;
-}
 
+
+
+}

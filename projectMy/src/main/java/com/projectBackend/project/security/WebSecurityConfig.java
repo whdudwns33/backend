@@ -41,11 +41,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                // api 인증은 허가 상태
-                .antMatchers("/sms/**").permitAll()
-                // 임시로 기능 컨트롤러 허가
                 .antMatchers("/auth/**", "/music/**", "/performance/**", "/perofrmer/**").permitAll()
-                // 스웨거 등
                 .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**", "/sign-api/exception").permitAll()
                 .anyRequest().authenticated()
                 .and()

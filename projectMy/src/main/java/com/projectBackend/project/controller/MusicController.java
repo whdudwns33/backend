@@ -1,11 +1,16 @@
 package com.projectBackend.project.controller;
 
+
 import com.projectBackend.project.dto.MusicDTO;
+import com.projectBackend.project.dto.MusicUserDto;
+import com.projectBackend.project.dto.UserReqDto;
+import com.projectBackend.project.entity.Member;
 import com.projectBackend.project.entity.Music;
 import com.projectBackend.project.service.MusicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,9 +82,31 @@ public class MusicController {
 
     //음악 등록
     @PostMapping("/new")
-    public ResponseEntity<MusicDTO> addMusic(@RequestBody MusicDTO musicDTO) {
-        MusicDTO addedMusic = musicService.addMusic(musicDTO);
+    public ResponseEntity<MusicDTO> addMusic(@RequestBody MusicUserDto musicUserDto) {
+
+        MusicDTO musicDto = musicUserDto.getMusicDTO();
+        UserReqDto userReqDTO = musicUserDto.getUserReqDto();
+        MusicDTO addedMusic = musicService.addMusic(musicDto, userReqDTO);
         return ResponseEntity.ok(addedMusic);
+    }
+
+
+
+    // 페이지네이션
+    @GetMapping("/list/page")
+    public ResponseEntity<List<MusicDTO>> musicList(@RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "11") int size) {
+        List<MusicDTO> list = musicService.getMusicList(page, size);
+        log.info("list : {}", list);
+        return ResponseEntity.ok(list);
+    }
+    // 페이지 수 조회
+    @GetMapping("/list/count")
+    public ResponseEntity<Integer> musicPage(@RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "10") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        int count =  musicService.getMusicPage(pageRequest);
+        return ResponseEntity.ok(count);
     }
 
 }

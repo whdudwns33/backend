@@ -7,20 +7,21 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
+@Entity
 @Getter
 @Setter
 @ToString
+@Table(name = "view")
 @NoArgsConstructor
-@Entity
-@Table(name = "token")
-public class Token {
+public class CommunityView {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-//    private String email;
-    private String refreshToken; // 리프레시 토큰
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    Member member;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "community_id")
+    private Community community;
+
+    @Column(name = "ip")
+    private String ip;
 }

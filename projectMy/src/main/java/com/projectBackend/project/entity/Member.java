@@ -19,37 +19,28 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Token token;
-
-    @Column(name = "USER_EMAIL")
     private String userEmail;
-
     private String userPassword;
+
     private String userNickname;
     private String userName;
     private String userAddr;
-    private String userAddrDetail;
     private String userPhone;
     private String userGen;
     private int userAge;
     private int userPoint;
     private String BUSINESS_NUM;
-    private String userProfile;
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
-
     @Builder
-    public Member(String email, String userPassword, String nickName, String name, String addr,String userAddrDetail, String tel, String gender, String BUSINESS_NUM,String userProfile, int point, int age, Authority authority) {
+    public Member(String email, String password, String nickName, String name, String addr, String tel, String gender, String BUSINESS_NUM, int point, int age, Authority authority) {
         this.userEmail = email;
-        this.userPassword = userPassword;
+        this.userPassword = password;
         this.userNickname = nickName;
         this.userAddr = addr;
-        this.userAddrDetail = userAddrDetail;
         this.userPhone = tel;
         this.BUSINESS_NUM = BUSINESS_NUM;
-        this.userProfile = userProfile;
         this.userName = name;
         this.userGen = gender;
         this.userPoint = point;

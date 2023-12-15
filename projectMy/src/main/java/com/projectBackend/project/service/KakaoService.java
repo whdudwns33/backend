@@ -23,6 +23,8 @@ import static com.projectBackend.project.utils.Common.*;
 @RequiredArgsConstructor
 @Transactional
 public class KakaoService {
+//    private final TokenRepository tokenRepository;
+//    private final TokenDto tokenDto;
 
     // 카카오 로그인 토큰 발급
     public String kakaoToken (String code) {
@@ -63,6 +65,10 @@ public class KakaoService {
                 // JSON 문자열을 JsonNode로 변환 및 토큰 정보 출력
                 JsonNode jsonNode = objectMapper.readTree(response.getBody());
                 String accessToken = jsonNode.get("access_token").asText();
+//                String tokenType = jsonNode.get("token_type").asText();
+//                String refreshToken = jsonNode.get("refresh_token").asText();
+//                Long accessExpire = Long.valueOf(jsonNode.get("expires_in").asText());
+//                Long refreshExpire = Long.valueOf(jsonNode.get("refresh_token_expires_in").asText());
 
                 log.info("Access Token: {}", accessToken);
 //                log.info("Token Type: {}", tokenType);
