@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+// 해당 엔티티(클래스)의 이름은 User 가 아닌 Member
+// 이미 jwt의 User가 존재하기 때문
 @Getter
 @Setter
 @ToString
@@ -13,11 +15,13 @@ import javax.persistence.*;
 @Table(name = "user")
 public class Member {
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String userEmail;
     private String userPassword;
+
     private String userNickname;
     private String userName;
     private String userAddr;
@@ -43,4 +47,6 @@ public class Member {
         this.authority = authority;
         this.userAge = age;
     }
+
+
 }

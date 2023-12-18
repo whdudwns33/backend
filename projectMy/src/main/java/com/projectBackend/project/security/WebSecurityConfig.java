@@ -4,7 +4,6 @@ import com.projectBackend.project.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -42,11 +41,9 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 .and()
                 .authorizeRequests()
-                // /auth/kakao에 대한 GET 요청 허용
-                // 추가로 GET 방식 + 맵핑 url 형식으로 적용해야 하는 듯.
-                .antMatchers(HttpMethod.GET, "/auth/kakao/**").permitAll()  // /auth/kakao에 대한 GET 요청 허용
-                .antMatchers(HttpMethod.POST, "/auth/kakao/**").permitAll()  // /auth/kakao에 대한 POST 요청 허용
-                .antMatchers("/auth/kakao/**", "/auth/**", "/ws/**", "/movies/**", "/api/**", "/stock/**", "/sms/**").permitAll()
+                // 문자 인증
+                .antMatchers("/sms/**").permitAll()
+                .antMatchers("/auth/**", "/music/**", "/performance/**", "/perofrmer/**").permitAll()
                 .antMatchers("/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**", "/sign-api/exception").permitAll()
                 .anyRequest().authenticated()
                 .and()

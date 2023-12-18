@@ -2,8 +2,8 @@ package com.projectBackend.project.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.projectBackend.project.entity.Token;
-import com.projectBackend.project.repository.TokenRepository;
+//import com.projectBackend.project.entity.Token;
+//import com.projectBackend.project.repository.TokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -16,8 +16,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-
 import static com.projectBackend.project.utils.Common.*;
 
 @Slf4j
@@ -25,7 +23,7 @@ import static com.projectBackend.project.utils.Common.*;
 @RequiredArgsConstructor
 @Transactional
 public class KakaoService {
-    private final TokenRepository tokenRepository;
+//    private final TokenRepository tokenRepository;
 //    private final TokenDto tokenDto;
 
     // 카카오 로그인 토큰 발급
@@ -61,7 +59,7 @@ public class KakaoService {
             System.out.println("status" + response.getStatusCodeValue());
             if (response.getStatusCodeValue() == 200) {
                 // 카카오 토큰 정보를 저장하기 위한 객체 생성
-                Token token = new Token();
+//                Token token = new Token();
                 ObjectMapper objectMapper = new ObjectMapper();
 
                 // JSON 문자열을 JsonNode로 변환 및 토큰 정보 출력
