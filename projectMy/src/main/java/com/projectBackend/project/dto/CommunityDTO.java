@@ -12,7 +12,6 @@ public class CommunityDTO {
     private Long id;
     private String email;
     private Long categoryId;
-    private String categoryName;
     private String title;
     private String content;
     private List<String> medias;

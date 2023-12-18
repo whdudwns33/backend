@@ -208,6 +208,20 @@ public class TokenProvider {
         return false;
     }
 
+
+//    // 저장되어 있는 토큰 가져오기
+//    public String findToken(String email) {
+//        Optional<Token> token = tokenRepository.findByUserEmail(email);
+//        Token tokenData = token.get();
+//        System.out.println("토큰 정보 : " + tokenData);
+//        String refreshToken = tokenData.getRefreshToken();
+//        return refreshToken;
+//    }
+//
+//    // 토큰
+
+
+
     // access 토큰 재발급
     public String generateAccessToken(Authentication authentication) {
         return generateTokenDto(authentication).getAccessToken();
